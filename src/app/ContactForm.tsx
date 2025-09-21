@@ -147,7 +147,7 @@ const ContactForm = () => {
 
     try {
       // Insert data into Supabase
-      const { data, error: supabaseError } = await supabase
+      const { error: supabaseError } = await supabase
         .from('player_registrations')
         .insert([
           {

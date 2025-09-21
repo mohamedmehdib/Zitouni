@@ -157,7 +157,6 @@ const VideoManagement = ({ showMessage }: VideoManagementProps) => {
                 required
               />
             </div>
-            jjj
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">اسم اللاعب</label>
               <input
