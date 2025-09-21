@@ -130,7 +130,7 @@ const VideoManagement = ({ showMessage }: VideoManagementProps) => {
       showMessage('error', 'خطأ في حذف الفيديو');
     }
   };
-
+  
   return (
     <div className="p-4 md:p-6">
       <div className="bg-white p-4 md:p-6 rounded-lg shadow-md mb-6">
