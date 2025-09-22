@@ -39,7 +39,7 @@ const Navbar = () => {
   return (
     <nav className={`fixed w-full z-50 transition-all duration-300 ${
       isScrolled ? 'bg-[#132E5D]/95 backdrop-blur-sm shadow-lg py-2' : 'bg-[#132E5D] py-4'
-    }`} >
+    }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo and brand name */}
@@ -62,7 +62,7 @@ const Navbar = () => {
 
           {/* Desktop Menu */}
           <div className="hidden md:block">
-            <div className="mr-10 flex items-baseline space-x-20" >
+            <div className="mr-10 flex items-baseline space-x-20">
               <a 
                 href="#home" 
                 onClick={(e) => handleSmoothScroll(e, 'home')} 
@@ -138,31 +138,17 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu - Matches desktop version */}
       <div className={`md:hidden transition-all duration-300 ease-in-out ${
         isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
       }`}>
-        <div className="px-2 pt-2 pb-3 space-y-1 bg-[#132E5D] shadow-lg" >
+        <div className="px-2 pt-2 pb-3 space-y-1 bg-[#132E5D] shadow-lg">
           <a 
             href="#home" 
             onClick={(e) => handleSmoothScroll(e, 'home')} 
             className="text-white hover:bg-[#387F3D] block px-3 py-2 rounded-md text-base font-medium transition duration-150"
           >
             الرئيسية
-          </a>
-          <a 
-            href="#about" 
-            onClick={(e) => handleSmoothScroll(e, 'about')} 
-            className="text-white hover:bg-[#387F3D] block px-3 py-2 rounded-md text-base font-medium transition duration-150"
-          >
-            من نحن
-          </a>
-          <a 
-            href="#services" 
-            onClick={(e) => handleSmoothScroll(e, 'services')} 
-            className="text-white hover:bg-[#387F3D] block px-3 py-2 rounded-md text-base font-medium transition duration-150"
-          >
-            خدماتنا
           </a>
           <a 
             href="#portfolio" 

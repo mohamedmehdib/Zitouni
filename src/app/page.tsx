@@ -4,6 +4,7 @@ import HeroSection from './Herosection'
 import Mainsection from './Mainsection'
 import Footer from './Footer'
 import ContactForm from './ContactForm'
+import WhatsupButton from './WhatsupButton'
 export default function page() {
   return (
     <div>
@@ -12,6 +13,7 @@ export default function page() {
       <Mainsection />
       <ContactForm />
       <Footer />
+      <WhatsupButton />
     </div>
   )
 }

@@ -223,29 +223,6 @@ const ContactForm = () => {
         نموذج الاتصال - لاعب كرة القدم
       </h2>
 
-      {/* Contract PDF Button */}
-      <div className="mb-6 text-center">
-        <button
-          onClick={openContractPdf}
-          className="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-6 rounded-lg transition duration-200 inline-flex items-center"
-        >
-          <svg
-            className="ml-2 w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-            />
-          </svg>
-          عرض عقد اللاعبين
-        </button>
-      </div>
-
       {error && (
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-4">
           <strong>خطأ: </strong> {error}
@@ -269,7 +246,7 @@ const ContactForm = () => {
               value={formData.firstName}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               placeholder="أدخل اسمك الشخصي"
             />
           </div>
@@ -287,7 +264,7 @@ const ContactForm = () => {
               value={formData.lastName}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               placeholder="أدخل لقبك"
             />
           </div>
@@ -309,7 +286,7 @@ const ContactForm = () => {
               value={formData.nationality}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               placeholder="أدخل جنسيتك"
             />
           </div>
@@ -327,7 +304,7 @@ const ContactForm = () => {
               value={formData.age}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               placeholder="أدخل عمرك"
             />
           </div>
@@ -348,7 +325,7 @@ const ContactForm = () => {
               value={formData.sex}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
               <option value="">اختر الجنس</option>
               <option value="ذكر">ذكر</option>
@@ -369,7 +346,7 @@ const ContactForm = () => {
               value={formData.height}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               placeholder="أدخل طولك"
             />
           </div>
@@ -391,7 +368,7 @@ const ContactForm = () => {
               value={formData.position}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               placeholder="أدخل مركزك"
             />
           </div>
@@ -409,7 +386,7 @@ const ContactForm = () => {
               value={formData.accommodation}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               placeholder="أدخل مكان إقامتك"
             />
           </div>
@@ -429,7 +406,7 @@ const ContactForm = () => {
             name="previousClub"
             value={formData.previousClub}
             onChange={handleChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             placeholder="أدخل ناديك السابق"
           />
         </div>
@@ -448,7 +425,7 @@ const ContactForm = () => {
             value={formData.message}
             onChange={handleChange}
             rows={4}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             placeholder="اكتب ملاحظاتك هنا..."
           />
         </div>
@@ -483,7 +460,7 @@ const ContactForm = () => {
                   <img
                     src={captchaImg}
                     alt="captcha"
-                    className="border border-gray-300 rounded-lg bg-white px-2 py-1 h-12"
+                    className="border border-gray-500 rounded-lg bg-white px-2 py-1 h-12"
                   />
                   <input
                     type="text"
@@ -491,7 +468,7 @@ const ContactForm = () => {
                     value={captchaAnswer}
                     onChange={e => setCaptchaAnswer(e.target.value)}
                     required
-                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="flex-1 px-4 py-2 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="أدخل الرموز"
                   />
                 </div>
@@ -503,6 +480,29 @@ const ContactForm = () => {
               </p>
             </>
           )}
+        </div>
+
+        {/* Contract PDF Button */}
+        <div className="mb-6 text-center">
+          <button
+            onClick={openContractPdf}
+            className="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-6 rounded-lg transition duration-200 inline-flex items-center"
+          >
+            <svg
+              className="ml-2 w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              />
+            </svg>
+            عرض عقد اللاعبين
+          </button>
         </div>
 
         {/* زر الإرسال */}
