@@ -5,7 +5,7 @@ import { FaWhatsapp } from 'react-icons/fa';
 import dynamic from 'next/dynamic';
 
 // Use dynamic import with no SSR to completely avoid hydration issues
-const WhatsappButton = dynamic(() => Promise.resolve((props: any) => {
+const WhatsappButton = dynamic(() => Promise.resolve(() => {
   const handleClick = () => {
     const phoneNumber = "1234567890";
     const message = "Hello! I'm interested in your services.";
