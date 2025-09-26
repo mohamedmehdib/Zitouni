@@ -240,6 +240,7 @@ const BodyContentArabic = () => {
         }
       } catch (e) {
         // If not JSON, split by comma or other delimiters
+        console.log(e)
         if (specialties.includes(',')) {
           return specialties.split(',').map(s => s.trim()).filter(s => s.length > 0);
         } else if (specialties.includes(';')) {
