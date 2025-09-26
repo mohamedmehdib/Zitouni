@@ -120,11 +120,15 @@ const ArabicHeroSection = () => {
             
             {/* Text content - Now on right side */}
             <div className="order-2 text-center md:text-right mb-8 md:mb-0">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 md:mb-6 leading-tight">
-                حوّل <span className="text-[#387F3D]">وجودك الرقمي</span>
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 md:mb-6 leading-tight" dir='rtl'>
+                في <span className="text-[#387F3D]">Zitouni Pro Talent </span>
               </h1>
               <p className="text-lg sm:text-xl text-gray-200 mb-6 md:mb-8 max-w-lg mx-auto md:mr-0">
-                نقدم حلولاً رقمية مبتكرة تساعد عملك على النمو والازدهار في العصر الرقمي. من خلال تصميم مواقع ويب جذابة وتطبيقات متميزة، نضمن لك تحقيق أهدافك وزيادة وجودك الرقمي.
+              
+              نكتشف ونطوّر المواهب الكروية عبر برامج تدريبية ومعسكرات احترافية عالية المستوى.
+              نوفّر للاعبين مباريات تجريبية، اختبارات أداء، ومتابعة فردية لمسارهم الرياضي.
+              بشراكتنا مع Finalist التركية، نفتح أبواب الاحتراف في السوقين التركي والأوروبي.
+              معنا، تتحول الموهبة إلى مشروع احترافي حقيقي.
               </p>
             </div>
           </div>
