@@ -220,22 +220,11 @@ const AgentManagement = ({ showMessage }: AgentManagementProps) => {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">الموقع</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">البلد</label>
               <input
                 type="text"
                 value={agentForm.location}
                 onChange={(e) => setAgentForm({ ...agentForm, location: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">عدد اللاعبين الموظفين</label>
-              <input
-                type="number"
-                min="0"
-                value={agentForm.players_placed}
-                onChange={(e) => setAgentForm({ ...agentForm, players_placed: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
                 required
               />
@@ -271,13 +260,6 @@ const AgentManagement = ({ showMessage }: AgentManagementProps) => {
                     </div>
                   </div>
                 )}
-                <input
-                  type="url"
-                  value={agentForm.image_url}
-                  onChange={(e) => setAgentForm({ ...agentForm, image_url: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="أو أدخل رابط الصورة مباشرة"
-                />
               </div>
             </div>
             <div className="md:col-span-2">

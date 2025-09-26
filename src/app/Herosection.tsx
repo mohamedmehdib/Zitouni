@@ -126,14 +126,6 @@ const ArabicHeroSection = () => {
               <p className="text-lg sm:text-xl text-gray-200 mb-6 md:mb-8 max-w-lg mx-auto md:mr-0">
                 نقدم حلولاً رقمية مبتكرة تساعد عملك على النمو والازدهار في العصر الرقمي. من خلال تصميم مواقع ويب جذابة وتطبيقات متميزة، نضمن لك تحقيق أهدافك وزيادة وجودك الرقمي.
               </p>
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center md:justify-end">
-                <button className="bg-[#387F3D] hover:bg-[#2c6b30] text-white font-semibold py-2 sm:py-3 px-6 sm:px-8 rounded-lg transition duration-300 transform hover:-translate-y-1 text-sm sm:text-base">
-                  ابدأ المشروع
-                </button>
-                <button className="bg-transparent hover:bg-white/10 text-white font-semibold py-2 sm:py-3 px-6 sm:px-8 rounded-lg border-2 border-white transition duration-300 text-sm sm:text-base">
-                  اعرف المزيد
-                </button>
-              </div>
             </div>
           </div>
 

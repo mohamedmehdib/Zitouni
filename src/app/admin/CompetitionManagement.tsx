@@ -224,13 +224,6 @@ const CompetitionManagement = ({ showMessage }: CompetitionManagementProps) => {
                     </div>
                   </div>
                 )}
-                <input
-                  type="url"
-                  value={competitionForm.image_url}
-                  onChange={(e) => setCompetitionForm({ ...competitionForm, image_url: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="أو أدخل رابط الصورة مباشرة"
-                />
               </div>
             </div>
             <div>

@@ -54,12 +54,13 @@ const ArabicFooter = () => {
           <div>
             <h3 className="text-lg font-bold mb-6">خدماتنا</h3>
             <ul className="space-y-3">
-              <li><a href="#" className="text-gray-300 hover:text-white transition">اكتشاف المواهب</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-white transition">تقييم اللاعبين</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-white transition">إدارة المسيرة الرياضية</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-white transition">التعاقد مع الأندية</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-white transition">الاستشارات الرياضية</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-white transition">التدريبات المتخصصة</a></li>
+              <li className="text-gray-300 hover:text-white transition">اكتشاف المواهب</li>
+              <li className="text-gray-300 hover:text-white transition">إدارة المسيرة الرياضية</li>
+              <li className="text-gray-300 hover:text-white transition">التعاقد مع الأندية</li>
+              <li className="text-gray-300 hover:text-white transition">تسويق اللاعبين</li>
+              <li className="text-gray-300 hover:text-white transition">دورات و بطولات</li>
+              <li className="text-gray-300 hover:text-white transition">خدمة إنشاء CV</li>
+              <li className="text-gray-300 hover:text-white transition">الاستشارات الرياضية</li>
             </ul>
           </div>
 
@@ -73,7 +74,7 @@ const ArabicFooter = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                 </svg>
                 <div>
-                  <p className="text-gray-300">immeuble aoun etage 05 app 501 20 mars jawhra sousse . Sousse 4000</p>
+                  <p className="text-gray-300">immeuble aoun etage 06 app 501 20 mars jawhra sousse . Sousse 4000</p>
                   <p className="text-gray-300">jawahra sousse</p>
                 </div>
               </div>
@@ -82,7 +83,7 @@ const ArabicFooter = () => {
                 <svg className="w-5 h-5 ml-3 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
                 </svg>
-                <span className="text-gray-300">+21624262849</span>
+                <span className="text-gray-300" dir="ltr">+21624262849</span>
               </div>
               
               <div className="flex items-center">

@@ -15,6 +15,7 @@ const ContactForm = () => {
     nationality: '',
     age: '',
     sex: '',
+    phone: '', // New phone field
     previousClub: '',
     height: '',
     position: '',
@@ -156,6 +157,7 @@ const ContactForm = () => {
             nationality: formData.nationality,
             age: parseInt(formData.age),
             sex: formData.sex,
+            phone: formData.phone, // New phone field
             previous_club: formData.previousClub,
             height: parseInt(formData.height),
             position: formData.position,
@@ -179,6 +181,7 @@ const ContactForm = () => {
         nationality: '',
         age: '',
         sex: '',
+        phone: '', // Reset phone field
         previousClub: '',
         height: '',
         position: '',
@@ -310,7 +313,7 @@ const ContactForm = () => {
           </div>
         </div>
 
-        {/* الجنس + الطول */}
+        {/* الجنس + الهاتف */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label
@@ -334,6 +337,28 @@ const ContactForm = () => {
           </div>
           <div>
             <label
+              htmlFor="phone"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              رقم الهاتف *
+            </label>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-2 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="أدخل رقم هاتفك"
+            />
+          </div>
+        </div>
+
+        {/* الطول + المركز */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label
               htmlFor="height"
               className="block text-sm font-medium text-gray-700 mb-1"
             >
@@ -350,10 +375,6 @@ const ContactForm = () => {
               placeholder="أدخل طولك"
             />
           </div>
-        </div>
-
-        {/* المركز + الإقامة */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label
               htmlFor="position"
@@ -372,6 +393,10 @@ const ContactForm = () => {
               placeholder="أدخل مركزك"
             />
           </div>
+        </div>
+
+        {/* الإقامة + النادي السابق */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label
               htmlFor="accommodation"
@@ -390,25 +415,23 @@ const ContactForm = () => {
               placeholder="أدخل مكان إقامتك"
             />
           </div>
-        </div>
-
-        {/* النادي السابق */}
-        <div>
-          <label
-            htmlFor="previousClub"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            النادي السابق
-          </label>
-          <input
-            type="text"
-            id="previousClub"
-            name="previousClub"
-            value={formData.previousClub}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            placeholder="أدخل ناديك السابق"
-          />
+          <div>
+            <label
+              htmlFor="previousClub"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              النادي السابق
+            </label>
+            <input
+              type="text"
+              id="previousClub"
+              name="previousClub"
+              value={formData.previousClub}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="أدخل ناديك السابق"
+            />
+          </div>
         </div>
 
         {/* الرسالة */}

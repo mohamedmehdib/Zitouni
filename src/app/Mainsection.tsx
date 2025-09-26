@@ -42,8 +42,8 @@ interface Agent {
   name: string;
   company: string;
   location: string;
-  specialties: string[];
-  players_placed: number;
+  specialties: string[] | string; // Allow both array and string
+  players_placed?: number; // Make optional since it's missing in your interface
   image_url: string;
   created_at: string;
 }
@@ -180,13 +180,78 @@ const BodyContentArabic = () => {
     }
   }, [activeTab]);
 
-
-  const extractVideoId = (url : string) : string| null => {
-    const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
-    const match = url.match(regExp);
-    return (match && match[7].length === 11) ? match[7] : null;
+  const extractVideoId = (url: string): string | null => {
+    // Handle YouTube Shorts URLs
+    if (url.includes('youtube.com/shorts/')) {
+      const match = url.match(/youtube\.com\/shorts\/([^?#&]+)/);
+      return match ? match[1] : null;
+    }
+    
+    // Handle regular YouTube URLs
+    if (url.includes('youtube.com/watch?v=')) {
+      const match = url.match(/youtube\.com\/watch\?v=([^&#]+)/);
+      return match ? match[1] : null;
+    }
+    
+    // Handle youtu.be URLs (both regular and shorts)
+    if (url.includes('youtu.be/')) {
+      const match = url.match(/youtu\.be\/([^?#&]+)/);
+      return match ? match[1] : null;
+    }
+    
+    // Handle YouTube embed URLs
+    if (url.includes('youtube.com/embed/')) {
+      const match = url.match(/youtube\.com\/embed\/([^?#&]+)/);
+      return match ? match[1] : null;
+    }
+    
+    // If it's already just an ID (11 characters typical for YouTube)
+    if (url.length === 11 && !url.includes('/') && !url.includes('?')) {
+      return url;
+    }
+    
+    return null;
   };
 
+  const getEmbedUrl = (videoId: string | null): string => {
+    if (!videoId) return '';
+    
+    // For YouTube Shorts, use the regular embed URL - they work the same way
+    return `https://www.youtube.com/embed/${videoId}`;
+  };
+
+  const isYouTubeShort = (url: string): boolean => {
+    return url.includes('youtube.com/shorts/') || 
+           (url.includes('youtu.be/') && url.length < 50); // Shorts often have shorter URLs
+  };
+
+  // Helper function to safely handle specialties (array or string)
+  const getSpecialtiesArray = (specialties: string[] | string): string[] => {
+    if (Array.isArray(specialties)) {
+      return specialties;
+    }
+    
+    if (typeof specialties === 'string') {
+      // Try to parse as JSON array first
+      try {
+        const parsed = JSON.parse(specialties);
+        if (Array.isArray(parsed)) {
+          return parsed;
+        }
+      } catch (e) {
+        // If not JSON, split by comma or other delimiters
+        if (specialties.includes(',')) {
+          return specialties.split(',').map(s => s.trim()).filter(s => s.length > 0);
+        } else if (specialties.includes(';')) {
+          return specialties.split(';').map(s => s.trim()).filter(s => s.length > 0);
+        } else if (specialties.trim().length > 0) {
+          return [specialties.trim()];
+        }
+      }
+    }
+    
+    return [];
+  };
 
   return (
     <div id='portfolio' className="pt-16" dir="rtl">
@@ -366,27 +431,54 @@ const BodyContentArabic = () => {
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8">
-                {videos.map((video) => (
-                  <div key={video.id} className="bg-white rounded-xl shadow-lg overflow-hidden">
-                    <div className="video-container" style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden' }}>
-                    <iframe 
-      src={`https://www.youtube.com/embed/${extractVideoId(video.video_id)}`}
-      title={video.title}
-      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 0 }}
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-      allowFullScreen
-    />
-                    </div>
-                    <div className="p-4">
-                      <h3 className="font-bold text-lg text-blue-900 mb-1">{video.player_name}</h3>
-                      <div className="flex justify-between text-sm text-gray-600 mt-1">
-                        <span>{video.position}</span>
-                        <span>العمر: {video.age}</span>
+                {videos.map((video) => {
+                  const videoId = extractVideoId(video.video_id);
+                  const isShort = isYouTubeShort(video.video_id);
+                  
+                  return (
+                    <div key={video.id} className="bg-white rounded-xl shadow-lg overflow-hidden">
+                      <div 
+                        className={`video-container ${isShort ? 'short-video' : ''}`} 
+                        style={{ 
+                          position: 'relative', 
+                          paddingBottom: '56.25%',
+                          height: 0, 
+                          overflow: 'hidden' 
+                        }}
+                      >
+                        <iframe 
+                          src={getEmbedUrl(videoId)}
+                          title={video.title}
+                          style={{ 
+                            position: 'absolute', 
+                            top: 0, 
+                            left: 0, 
+                            width: '100%', 
+                            height: '100%', 
+                            border: 0 
+                          }}
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                          allowFullScreen
+                        />
                       </div>
-                      <p className="text-gray-700 text-sm mt-2">{video.club}</p>
+                      <div className="p-4">
+                        <h3 className="font-bold text-lg text-blue-900 mb-1">{video.player_name}</h3>
+                        <div className="flex justify-between text-sm text-gray-600 mt-1">
+                          <span>{video.position}</span>
+                          <span>العمر: {video.age}</span>
+                        </div>
+                        <p className="text-gray-700 text-sm mt-2">{video.club}</p>
+                        {isShort && (
+                          <div className="mt-2">
+                            <span className="bg-purple-100 text-purple-800 text-xs font-medium px-2 py-1 rounded">
+                              YouTube Short
+                            </span>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>
@@ -420,39 +512,49 @@ const BodyContentArabic = () => {
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:gap-8">
-                {agents.map((agent) => (
-                  <div key={agent.id} className="bg-gradient-to-br from-blue-900 to-blue-800 rounded-xl p-5 md:p-6 text-white text-center hover:shadow-xl transition-shadow duration-300 flex flex-col">
-                    <div className="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden mx-auto mb-4 border-4 border-white relative">
-                      <Image
-                        src={agent.image_url || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80'}
-                        alt={agent.name}
-                        fill
-                        className="object-cover"
-                        sizes="(max-width: 640px) 80px, 96px"
-                      />
-                    </div>
-                    <h3 className="text-lg md:text-xl font-bold mb-1">{agent.name}</h3>
-                    <p className="text-blue-200 text-sm mb-3">{agent.company}</p>
-                    <p className="text-sm mb-4">{agent.location}</p>
-                    
-                    <div className="mb-4">
-                      <h4 className="font-medium mb-2">التخصصات</h4>
-                      <div className="flex flex-wrap justify-center gap-1 md:gap-2">
-                        {agent.specialties && agent.specialties.map((specialty: string, i: number) => (
-                          <span key={i} className="bg-blue-700 text-xs px-2 py-1 rounded">
-                            {specialty}
-                          </span>
-                        ))}
+                {agents.map((agent) => {
+                  // Safely get specialties array
+                  const specialtiesArray = getSpecialtiesArray(agent.specialties);
+                  
+                  return (
+                    <div key={agent.id} className="bg-gradient-to-br from-blue-900 to-blue-800 rounded-xl p-5 md:p-6 text-white text-center hover:shadow-xl transition-shadow duration-300 flex flex-col">
+                      <div className="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden mx-auto mb-4 border-4 border-white relative">
+                        <Image
+                          src={agent.image_url || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80'}
+                          alt={agent.name}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 640px) 80px, 96px"
+                        />
                       </div>
+                      <h3 className="text-lg md:text-xl font-bold mb-1">{agent.name}</h3>
+                      <p className="text-blue-200 text-sm mb-3">{agent.company}</p>
+                      <p className="text-sm mb-4">{agent.location}</p>
+                      
+                      <div className="mb-4">
+                        <h4 className="font-medium mb-2">التخصصات</h4>
+                        <div className="flex flex-wrap justify-center gap-1 md:gap-2">
+                          {specialtiesArray.length > 0 ? (
+                            specialtiesArray.map((specialty: string, i: number) => (
+                              <span key={i} className="bg-blue-700 text-xs px-2 py-1 rounded">
+                                {specialty}
+                              </span>
+                            ))
+                          ) : (
+                            <span className="text-blue-200 text-xs">لا توجد تخصصات</span>
+                          )}
+                        </div>
+                      </div>
+                      
+                      {agent.players_placed !== undefined && (
+                        <p className="text-sm text-blue-200 mb-4">
+                          {agent.players_placed} لاعب تم توظيفهم
+                        </p>
+                      )}
+
                     </div>
-                    
-                    <p className="text-sm text-blue-200 mb-4">{agent.players_placed} لاعب تم توظيفهم</p>
-                    
-                    <button className="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg text-sm transition w-full mt-auto">
-                      الاتصال بالوكيل
-                    </button>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>

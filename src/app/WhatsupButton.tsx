@@ -12,6 +12,7 @@ const WhatsappButton = dynamic(() => Promise.resolve(() => {
     window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
   };
 
+  const message = "Hello! I'm interested in your services.";
   return (
     <div 
       className="fixed bottom-5 right-5 z-50 w-14 h-14 bg-green-500 rounded-full flex items-center justify-center cursor-pointer shadow-lg hover:bg-green-600 transition-all duration-300"

@@ -89,9 +89,12 @@ const Navbar = () => {
 
           {/* CTA Button */}
           <div className="hidden md:block">
-            <button className="px-4 py-2 rounded-md text-sm font-medium transition duration-300 bg-[#387F3D] text-white hover:bg-[#2c6b30]">
+            <a 
+              href="#contact" 
+              onClick={(e) => handleSmoothScroll(e, 'contact')} 
+              className="px-4 py-2 rounded-md text-sm font-medium transition duration-300 bg-[#387F3D] text-white hover:bg-[#2c6b30]">
               ابدأ الآن
-            </button>
+            </a>
           </div>
 
           {/* Mobile menu button */}
@@ -164,9 +167,12 @@ const Navbar = () => {
           >
             اتصل بنا
           </a>
-          <button className="w-full mt-4 px-4 py-2 rounded-md text-base font-medium bg-[#387F3D] text-white hover:bg-[#2c6b30] transition duration-150">
+          <a
+            href="#contact" 
+            onClick={(e) => handleSmoothScroll(e, 'contact')} 
+            className="w-full mt-4 px-4 py-2 rounded-md text-base font-medium bg-[#387F3D] text-white hover:bg-[#2c6b30] transition duration-150">
             ابدأ الآن
-          </button>
+          </a>
         </div>
       </div>
     </nav>

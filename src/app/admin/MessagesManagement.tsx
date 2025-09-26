@@ -16,6 +16,7 @@ interface PlayerRegistration {
   nationality: string;
   age: number;
   sex: string;
+  phone: string; // Added phone field
   previous_club: string | null;
   height: number;
   position: string;
@@ -154,14 +155,15 @@ const MessagesManagement = ({ showMessage }: MessagesManagementProps) => {
                     {message.first_name} {message.last_name}
                   </h3>
                   <span className="text-xs px-2 py-1 bg-gray-100 rounded-full">
-                    {(message.sex)}
+                    {message.sex}
                   </span>
                 </div>
                 <div className="text-sm text-gray-600 space-y-1">
                   <p>العمر: {message.age} سنة</p>
                   <p>الطول: {message.height} سم</p>
                   <p>المركز: {message.position}</p>
-                  <p>الإقامة: {(message.accommodation)}</p>
+                  <p>الهاتف: {message.phone}</p>
+                  <p>الإقامة: {message.accommodation || 'غير محدد'}</p>
                   <p className="text-xs text-gray-400">
                     {formatGregorianDateTime(message.created_at)}
                   </p>
@@ -179,7 +181,7 @@ const MessagesManagement = ({ showMessage }: MessagesManagementProps) => {
                     {selectedMessage.first_name} {selectedMessage.last_name}
                   </h3>
                   <span className="text-sm px-3 py-1 bg-blue-100 text-blue-800 rounded-full">
-                    {(selectedMessage.sex)}
+                    {selectedMessage.sex}
                   </span>
                 </div>
 
@@ -197,6 +199,10 @@ const MessagesManagement = ({ showMessage }: MessagesManagementProps) => {
                     <p className="text-gray-800 mt-1">{selectedMessage.height} سم</p>
                   </div>
                   <div>
+                    <label className="font-medium text-gray-600">رقم الهاتف:</label>
+                    <p className="text-gray-800 mt-1">{selectedMessage.phone}</p>
+                  </div>
+                  <div>
                     <label className="font-medium text-gray-600">النادي السابق:</label>
                     <p className="text-gray-800 mt-1">{selectedMessage.previous_club || 'غير محدد'}</p>
                   </div>
@@ -206,7 +212,7 @@ const MessagesManagement = ({ showMessage }: MessagesManagementProps) => {
                   </div>
                   <div>
                     <label className="font-medium text-gray-600">الإقامة:</label>
-                    <p className="text-gray-800 mt-1">{(selectedMessage.accommodation)}</p>
+                    <p className="text-gray-800 mt-1">{selectedMessage.accommodation || 'غير محدد'}</p>
                   </div>
                 </div>
 
@@ -221,7 +227,7 @@ const MessagesManagement = ({ showMessage }: MessagesManagementProps) => {
 
                 <div>
                   <label className="font-medium text-gray-600">تاريخ الإرسال:</label>
-                  <p className="text-gray-800 mt-1">
+                  <p className="text-gray-800 mt-1 text-right" dir='ltr'>
                     {formatGregorianDateTime(selectedMessage.created_at)}
                   </p>
                 </div>
