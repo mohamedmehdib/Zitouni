@@ -351,6 +351,7 @@ const ContactForm = () => {
               required
               className="w-full px-4 py-2 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               placeholder="أدخل رقم هاتفك"
+              dir='rtl'
             />
           </div>
         </div>
