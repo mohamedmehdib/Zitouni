@@ -1,24 +1,14 @@
 // components/ArabicFooter.tsx
 'use client';
-import { useState } from 'react';
 
 interface ArabicFooterProps {
   onServiceClick: (serviceName: string) => void;
 }
 
 const ArabicFooter = ({ onServiceClick }: ArabicFooterProps) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const handleClick = () => {
-    const phoneNumber = "1234567890";
-    const message = "Hello! I'm interested in your services.";
-    window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
-  };
-
   // Function to handle smooth scrolling
   const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
     e.preventDefault();
-    setIsMenuOpen(false);
     
     const targetElement = document.getElementById(targetId);
     if (targetElement) {

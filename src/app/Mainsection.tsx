@@ -91,7 +91,6 @@ const BodyContentArabic = () => {
     // Open in new tab
     window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
   };
-
   // Format phone number for display
   const formatPhoneNumberForDisplay = (phoneNumber: string): string => {
     let formattedNumber = phoneNumber.trim();
