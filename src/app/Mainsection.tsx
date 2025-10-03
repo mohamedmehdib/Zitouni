@@ -91,18 +91,6 @@ const BodyContentArabic = () => {
     // Open in new tab
     window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
   };
-  // Format phone number for display
-  const formatPhoneNumberForDisplay = (phoneNumber: string): string => {
-    let formattedNumber = phoneNumber.trim();
-    
-    // Remove any existing + sign
-    if (formattedNumber.startsWith('+')) {
-      formattedNumber = formattedNumber.substring(1);
-    }
-    
-    // Add the + sign for display
-    return `+${formattedNumber}`;
-  };
 
   // Fetch players data
   useEffect(() => {
