@@ -1,8 +1,40 @@
 import type { Metadata } from "next";
 import './globals.css';
 
+// Base metadata that will be extended based on language
+const baseMetadata = {
+  authors: [{ name: "Zitouni Pro Talent" }],
+  creator: "Zitouni Pro Talent",
+  publisher: "Zitouni Pro Talent",
+  metadataBase: new URL('https://zitouniprotalent.com'),
+  alternates: {
+    canonical: '/',
+    languages: {
+      'ar': '/ar',
+      'fr': '/fr',
+      'en': '/en',
+    },
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large' as const,
+      'max-snippet': -1,
+    },
+  },
+  verification: {
+    google: 'your-google-verification-code',
+  },
+  category: 'sports' as const,
+};
+
 // French Metadata
-export const metadata: Metadata = {
+const frenchMetadata: Metadata = {
+  ...baseMetadata,
   title: "Zitouni Pro Talent - Agence de Découverte de Talents Footballistiques en Tunisie",
   description: "Zitouni Pro Talent - L'agence leader en Tunisie pour la découverte et le développement des talents footballistiques. Nous aidons les joueurs tunisiens à obtenir des opportunités professionnelles en Turquie, Espagne, Émirats Arabes Unis, Albanie et autres pays. Formation, tests et représentation professionnelle pour les joueurs de football.",
   keywords: [
@@ -27,18 +59,6 @@ export const metadata: Metadata = {
     "professionnels football",
     "formation football"
   ].join(", "),
-  authors: [{ name: "Zitouni Pro Talent" }],
-  creator: "Zitouni Pro Talent",
-  publisher: "Zitouni Pro Talent",
-  metadataBase: new URL('https://zitouniprotalent.com'),
-  alternates: {
-    canonical: '/',
-    languages: {
-      'ar': '/ar',
-      'fr': '/fr',
-      'en': '/en',
-    },
-  },
   openGraph: {
     type: 'website',
     locale: 'fr_TN',
@@ -62,25 +82,11 @@ export const metadata: Metadata = {
     images: ['/twitter-image.jpg'],
     creator: '@ZitouniProTalent',
   },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large' as const,
-      'max-snippet': -1,
-    },
-  },
-  verification: {
-    google: 'your-google-verification-code',
-  },
-  category: 'sports',
 };
 
 // English Metadata
 const englishMetadata: Metadata = {
+  ...baseMetadata,
   title: "Zitouni Pro Talent - Football Talent Discovery Agency in Tunisia",
   description: "Zitouni Pro Talent - The leading agency in Tunisia for discovering and developing football talents. We help Tunisian players get professional opportunities in Turkey, Spain, UAE, Albania and other countries. Training, trials, and professional representation for football players.",
   keywords: [
@@ -128,21 +134,11 @@ const englishMetadata: Metadata = {
     images: ['/twitter-image.jpg'],
     creator: '@ZitouniProTalent',
   },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large' as const,
-      'max-snippet': -1,
-    },
-  },
 };
 
 // Arabic Metadata
 const arabicMetadata: Metadata = {
+  ...baseMetadata,
   title: "Zitouni Pro Talent - وكالة اكتشاف المواهب الكروية في تونس",
   description: "Zitouni Pro Talent - الوكالة الرائدة في تونس لاكتشاف وتطوير المواهب الكروية. نساعد اللاعبين التونسيين في الحصول على فرص احترافية في تركيا، إسبانيا، الإمارات، ألبانيا ودول أخرى. تدريب، اختبارات، وتمثيل احترافي للاعبي كرة القدم.",
   keywords: [
@@ -190,61 +186,20 @@ const arabicMetadata: Metadata = {
     images: ['/twitter-image.jpg'],
     creator: '@ZitouniProTalent',
   },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large' as const,
-      'max-snippet': -1,
-    },
-  },
 };
 
 // Function to get metadata based on language
 export function generateMetadata({ params }: { params: { lang: string } }): Metadata {
   const { lang } = params;
   
-  const baseMetadata = {
-    authors: [{ name: "Zitouni Pro Talent" }],
-    creator: "Zitouni Pro Talent",
-    publisher: "Zitouni Pro Talent",
-    metadataBase: new URL('https://zitouniprotalent.com'),
-    alternates: {
-      canonical: '/',
-      languages: {
-        'ar': '/ar',
-        'fr': '/fr',
-        'en': '/en',
-      },
-    },
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        'max-video-preview': -1,
-        'max-image-preview': 'large' as const,
-        'max-snippet': -1,
-      },
-    },
-    verification: {
-      google: 'your-google-verification-code',
-    },
-    category: 'sports' as const,
-  };
-
   switch (lang) {
     case 'ar':
-      return { ...baseMetadata, ...arabicMetadata };
+      return arabicMetadata;
     case 'en':
-      return { ...baseMetadata, ...englishMetadata };
+      return englishMetadata;
     case 'fr':
     default:
-      return { ...baseMetadata, ...metadata };
+      return frenchMetadata;
   }
 }
 

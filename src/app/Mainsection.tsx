@@ -305,7 +305,7 @@ const BodyContentArabic = () => {
             {[
               { id: 'players', label: 'اللاعبين المميزين' },
               { id: 'competitions', label: 'البطولات' },
-              { id: 'videos', label: 'فيديوهات اللاعبين' },
+              { id: 'videos', label: 'فيديوهات عامة' },
               { id: 'agents', label: 'شبكة الوكلاء' }
             ].map((tab) => (
               <button
