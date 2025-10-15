@@ -24,6 +24,8 @@ interface Competition {
   location: string;
   teams: string;
   image_url: string;
+  available: boolean;
+  quotation_file: string;
 }
 
 interface Video {
@@ -71,6 +73,8 @@ const BodyContentArabic = () => {
     videos: false,
     agents: false
   });
+  const [selectedCompetition, setSelectedCompetition] = useState<Competition | null>(null);
+  const [showMessageModal, setShowMessageModal] = useState(false);
 
   // Function to handle WhatsApp redirection
   const handleWhatsAppRedirect = (phoneNumber: string) => {
@@ -274,6 +278,24 @@ const BodyContentArabic = () => {
     return [];
   };
 
+  // Handle competition click
+  const handleCompetitionClick = (competition: Competition) => {
+    setSelectedCompetition(competition);
+    
+    if (competition.available) {
+      setShowMessageModal(true);
+    }
+    // If not available, do nothing or show a different message
+  };
+
+  // Handle PDF view
+  const handleViewDevis = () => {
+    if (selectedCompetition?.quotation_file) {
+      window.open(selectedCompetition.quotation_file, '_blank', 'noopener,noreferrer');
+    }
+    setShowMessageModal(false);
+  };
+
   return (
     <div id='portfolio' className="pt-16" dir="rtl">
       {/* Tab Navigation */}
@@ -383,7 +405,15 @@ const BodyContentArabic = () => {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-8">
                 {competitions.map((competition) => (
-                  <div key={competition.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col">
+                  <div 
+                    key={competition.id} 
+                    className={`rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col cursor-pointer transform hover:scale-105 ${
+                      competition.available 
+                        ? 'bg-white border-2 border-transparent hover:border-blue-500' 
+                        : 'bg-gray-100 border-2 border-gray-300 opacity-75'
+                    }`}
+                    onClick={() => handleCompetitionClick(competition)}
+                  >
                     <div className="relative h-40 sm:h-48">
                       <Image
                         src={competition.image_url || 'https://images.unsplash.com/photo-1516466723877-e4ec1d736c8a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80'}
@@ -394,6 +424,15 @@ const BodyContentArabic = () => {
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
                         <h3 className="text-white text-lg md:text-xl font-bold">{competition.name}</h3>
+                      </div>
+                      <div className="absolute top-3 left-3">
+                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                          competition.available 
+                            ? 'bg-green-100 text-green-800' 
+                            : 'bg-red-100 text-red-800'
+                        }`}>
+                          {competition.available ? 'متاحة' : 'منتهية'}
+                        </span>
                       </div>
                     </div>
                     <div className="p-4 flex-grow">
@@ -416,6 +455,16 @@ const BodyContentArabic = () => {
                         </svg>
                         <span className="truncate">{competition.teams}</span>
                       </div>
+                      {competition.available && (
+                        <div className="mt-3 pt-3 border-t border-gray-200">
+                          <div className="flex items-center text-blue-600 text-sm font-medium">
+                            <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            انقر لعرض التفاصيل
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -587,6 +636,68 @@ const BodyContentArabic = () => {
             )}
           </div>
         </section>
+      )}
+
+      {/* Message Modal */}
+      {showMessageModal && selectedCompetition && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 md:p-8">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+              </div>
+              
+              <h3 className="text-xl md:text-2xl font-bold text-blue-900 mb-2">
+                {selectedCompetition.name}
+              </h3>
+              
+              <p className="text-gray-600 mb-2">
+                هذه البطولة متاحة حالياً للمشاركة
+              </p>
+              
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                <p className="text-blue-800 text-sm">
+                  <strong>التاريخ:</strong> {selectedCompetition.date}<br/>
+                  <strong>المكان:</strong> {selectedCompetition.location}<br/>
+                  <strong>عدد الفرق:</strong> {selectedCompetition.teams}
+                </p>
+              </div>
+
+              {selectedCompetition.quotation_file ? (
+                <div className="space-y-3">
+                  <button
+                    onClick={handleViewDevis}
+                    className="w-full bg-blue-900 hover:bg-blue-800 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    عرض عرض الأسعار (PDF)
+                  </button>
+                  
+                  <p className="text-sm text-gray-500">
+                    سيتم فتح ملف PDF في نافذة جديدة
+                  </p>
+                </div>
+              ) : (
+                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                  <p className="text-yellow-800 text-sm">
+                    لا يتوفر عرض أسعار لهذه البطولة حالياً. يرجى التواصل معنا للمزيد من المعلومات.
+                  </p>
+                </div>
+              )}
+              
+              <button
+                onClick={() => setShowMessageModal(false)}
+                className="w-full mt-4 bg-gray-500 hover:bg-gray-400 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200"
+              >
+                إغلاق
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

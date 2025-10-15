@@ -12,6 +12,8 @@ interface Competition {
   date: string;
   location: string;
   teams: string;
+  available: boolean;
+  quotation_file: string;
   created_at: string;
 }
 
@@ -21,6 +23,8 @@ interface CompetitionFormData {
   date: string;
   location: string;
   teams: string;
+  available: boolean;
+  quotation_file: string;
 }
 
 interface CompetitionManagementProps {
@@ -29,15 +33,19 @@ interface CompetitionManagementProps {
 
 const CompetitionManagement = ({ showMessage }: CompetitionManagementProps) => {
   const [uploading, setUploading] = useState(false);
+  const [uploadingPdf, setUploadingPdf] = useState(false);
   const [competitions, setCompetitions] = useState<Competition[]>([]);
   const [editingCompetition, setEditingCompetition] = useState<Competition | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const pdfInputRef = useRef<HTMLInputElement>(null);
   const [competitionForm, setCompetitionForm] = useState<CompetitionFormData>({
     name: '',
     image_url: '',
     date: '',
     location: '',
-    teams: ''
+    teams: '',
+    available: true,
+    quotation_file: ''
   });
 
   // Use useCallback to memoize the function and prevent infinite re-renders
@@ -87,6 +95,33 @@ const CompetitionManagement = ({ showMessage }: CompetitionManagementProps) => {
     }
   };
 
+  const uploadPdf = async (file: File) => {
+    try {
+      setUploadingPdf(true);
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Math.random().toString(36).substring(2)}_${Date.now()}.${fileExt}`;
+      const filePath = `quotations/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('file')
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('file')
+        .getPublicUrl(filePath);
+
+      setUploadingPdf(false);
+      return publicUrl;
+    } catch (error) {
+      console.error('Error uploading PDF:', error);
+      setUploadingPdf(false);
+      showMessage('error', 'خطأ في تحميل ملف PDF');
+      return null;
+    }
+  };
+
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -105,6 +140,27 @@ const CompetitionManagement = ({ showMessage }: CompetitionManagementProps) => {
     if (imageUrl) {
       setCompetitionForm({ ...competitionForm, image_url: imageUrl });
       showMessage('success', 'تم تحميل الصورة بنجاح!');
+    }
+  };
+
+  const handlePdfUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.type !== 'application/pdf') {
+      showMessage('error', 'يرجى اختيار ملف PDF فقط');
+      return;
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
+      showMessage('error', 'يجب أن يكون حجم الملف أقل من 10 ميجابايت');
+      return;
+    }
+
+    const pdfUrl = await uploadPdf(file);
+    if (pdfUrl) {
+      setCompetitionForm({ ...competitionForm, quotation_file: pdfUrl });
+      showMessage('success', 'تم تحميل ملف طلب عرض الأسعار بنجاح!');
     }
   };
 
@@ -135,7 +191,9 @@ const CompetitionManagement = ({ showMessage }: CompetitionManagementProps) => {
         image_url: '',
         date: '',
         location: '',
-        teams: ''
+        teams: '',
+        available: true,
+        quotation_file: ''
       });
       setEditingCompetition(null);
       fetchCompetitions();
@@ -153,7 +211,9 @@ const CompetitionManagement = ({ showMessage }: CompetitionManagementProps) => {
       image_url: competition.image_url,
       date: competition.date,
       location: competition.location,
-      teams: competition.teams
+      teams: competition.teams,
+      available: competition.available,
+      quotation_file: competition.quotation_file
     });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -177,6 +237,23 @@ const CompetitionManagement = ({ showMessage }: CompetitionManagementProps) => {
     }
   };
 
+  const toggleAvailability = async (competition: Competition) => {
+    try {
+      const { error } = await supabase
+        .from('competitions')
+        .update({ available: !competition.available })
+        .eq('id', competition.id);
+      
+      if (error) throw error;
+      
+      showMessage('success', `تم ${!competition.available ? 'تفعيل' : 'إيقاف'} البطولة بنجاح!`);
+      fetchCompetitions();
+    } catch (error) {
+      console.error('Error updating competition availability:', error);
+      showMessage('error', 'خطأ في تحديث حالة البطولة');
+    }
+  };
+
   return (
     <div className="p-4 md:p-6">
       <div className="bg-white p-4 md:p-6 rounded-lg shadow-md mb-6">
@@ -193,6 +270,7 @@ const CompetitionManagement = ({ showMessage }: CompetitionManagementProps) => {
                 required
               />
             </div>
+            
             <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-1">صورة البطولة</label>
               <div className="flex flex-col space-y-2">
@@ -226,6 +304,43 @@ const CompetitionManagement = ({ showMessage }: CompetitionManagementProps) => {
                 )}
               </div>
             </div>
+
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-1">طلب عرض الأسعار (PDF)</label>
+              <div className="flex flex-col space-y-2">
+                <input
+                  type="file"
+                  ref={pdfInputRef}
+                  onChange={handlePdfUpload}
+                  accept=".pdf"
+                  className="hidden"
+                  id="quotation-file-upload"
+                />
+                <label
+                  htmlFor="quotation-file-upload"
+                  className="px-4 py-2 bg-green-100 text-green-700 rounded-lg cursor-pointer text-center hover:bg-green-200 transition"
+                >
+                  {uploadingPdf ? 'جاري التحميل...' : 'اختر ملف PDF'}
+                </label>
+                {competitionForm.quotation_file && (
+                  <div className="mt-2">
+                    <p className="text-sm text-green-600">تم تحميل الملف بنجاح</p>
+                    <a 
+                      href={competitionForm.quotation_file} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800 text-sm flex items-center gap-1"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                      عرض الملف
+                    </a>
+                  </div>
+                )}
+              </div>
+            </div>
+
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">التاريخ</label>
               <input
@@ -258,14 +373,30 @@ const CompetitionManagement = ({ showMessage }: CompetitionManagementProps) => {
                 required
               />
             </div>
+
+            <div className="md:col-span-2">
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="available"
+                  checked={competitionForm.available}
+                  onChange={(e) => setCompetitionForm({ ...competitionForm, available: e.target.checked })}
+                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded ml-2"
+                />
+                <label htmlFor="available" className="block text-sm font-medium text-gray-700">
+                  البطولة متاحة
+                </label>
+              </div>
+              <p className="text-sm text-gray-500 mt-1">إلغاء التحديد يعني أن البطولة منتهية</p>
+            </div>
           </div>
           <div className="flex flex-col sm:flex-row gap-3">
             <button
               type="submit"
               className="flex-1 bg-blue-900 hover:bg-blue-800 text-white py-2 md:py-3 rounded-lg transition font-medium"
-              disabled={uploading}
+              disabled={uploading || uploadingPdf}
             >
-              {uploading ? 'جاري المعالجة...' : editingCompetition ? 'تحديث' : 'إضافة البطولة'}
+              {(uploading || uploadingPdf) ? 'جاري المعالجة...' : editingCompetition ? 'تحديث' : 'إضافة البطولة'}
             </button>
             {editingCompetition && (
               <button
@@ -277,7 +408,9 @@ const CompetitionManagement = ({ showMessage }: CompetitionManagementProps) => {
                     image_url: '',
                     date: '',
                     location: '',
-                    teams: ''
+                    teams: '',
+                    available: true,
+                    quotation_file: ''
                   });
                 }}
                 className="flex-1 bg-gray-500 hover:bg-gray-400 text-white py-2 md:py-3 rounded-lg transition font-medium"
@@ -303,12 +436,13 @@ const CompetitionManagement = ({ showMessage }: CompetitionManagementProps) => {
                   <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">التاريخ</th>
                   <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell">المكان</th>
                   <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider hidden sm:table-cell">الفرق</th>
+                  <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">الحالة</th>
                   <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">الإجراءات</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {competitions.map((competition) => (
-                  <tr key={competition.id}>
+                  <tr key={competition.id} className={competition.available ? '' : 'bg-gray-50'}>
                     <td className="px-4 py-4 whitespace-nowrap">
                       <div className="relative h-12 w-12 rounded-full overflow-hidden">
                         <Image
@@ -320,10 +454,36 @@ const CompetitionManagement = ({ showMessage }: CompetitionManagementProps) => {
                         />
                       </div>
                     </td>
-                    <td className="px-4 py-4 whitespace-nowrap max-w-xs truncate">{competition.name}</td>
+                    <td className="px-4 py-4 whitespace-nowrap max-w-xs truncate">
+                      <div className="flex flex-col">
+                        <span className={competition.available ? '' : 'text-gray-500'}>{competition.name}</span>
+                        {competition.quotation_file && (
+                          <a 
+                            href={competition.quotation_file} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="text-blue-600 hover:text-blue-800 text-xs flex items-center gap-1 mt-1"
+                          >
+                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            عرض الأسعار
+                          </a>
+                        )}
+                      </div>
+                    </td>
                     <td className="px-4 py-4 whitespace-nowrap hidden md:table-cell">{competition.date}</td>
                     <td className="px-4 py-4 whitespace-nowrap hidden lg:table-cell">{competition.location}</td>
                     <td className="px-4 py-4 whitespace-nowrap hidden sm:table-cell">{competition.teams}</td>
+                    <td className="px-4 py-4 whitespace-nowrap">
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                        competition.available 
+                          ? 'bg-green-100 text-green-800' 
+                          : 'bg-red-100 text-red-800'
+                      }`}>
+                        {competition.available ? 'متاحة' : 'منتهية'}
+                      </span>
+                    </td>
                     <td className="px-4 py-4 whitespace-nowrap text-sm font-medium">
                       <div className="flex flex-col sm:flex-row gap-2">
                         <button
@@ -331,6 +491,16 @@ const CompetitionManagement = ({ showMessage }: CompetitionManagementProps) => {
                           className="text-blue-600 hover:text-blue-900 px-2 py-1 bg-blue-50 rounded"
                         >
                           تعديل
+                        </button>
+                        <button
+                          onClick={() => toggleAvailability(competition)}
+                          className={`px-2 py-1 rounded ${
+                            competition.available 
+                              ? 'text-orange-600 hover:text-orange-900 bg-orange-50' 
+                              : 'text-green-600 hover:text-green-900 bg-green-50'
+                          }`}
+                        >
+                          {competition.available ? 'إيقاف' : 'تفعيل'}
                         </button>
                         <button
                           onClick={() => handleDeleteCompetition(competition.id)}
