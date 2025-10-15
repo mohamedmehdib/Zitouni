@@ -6,7 +6,7 @@ const baseMetadata = {
   authors: [{ name: "Zitouni Pro Talent" }],
   creator: "Zitouni Pro Talent",
   publisher: "Zitouni Pro Talent",
-  metadataBase: new URL('https://zitouniprotalent.com'),
+  metadataBase: new URL('https://zitouni-pro-talent.tn'),
   alternates: {
     canonical: '/',
     languages: {
@@ -62,7 +62,7 @@ const frenchMetadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'fr_TN',
-    url: 'https://zitouniprotalent.com',
+    url: 'https://zitouni-pro-talent.tn',
     siteName: 'Zitouni Pro Talent',
     title: 'Zitouni Pro Talent - Agence de Découverte de Talents Footballistiques en Tunisie',
     description: 'L\'agence leader en Tunisie pour la découverte et le développement des talents footballistiques. Opportunités professionnelles en Turquie, Espagne, Émirats Arabes Unis, Albanie et autres.',
@@ -114,7 +114,7 @@ const englishMetadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://zitouniprotalent.com',
+    url: 'https://zitouni-pro-talent.tn',
     siteName: 'Zitouni Pro Talent',
     title: 'Zitouni Pro Talent - Football Talent Discovery Agency in Tunisia',
     description: 'The leading agency in Tunisia for discovering and developing football talents. Professional opportunities in Turkey, Spain, UAE, Albania and other countries.',
@@ -166,7 +166,7 @@ const arabicMetadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'ar_TN',
-    url: 'https://zitouniprotalent.com',
+    url: 'https://zitouni-pro-talent.tn',
     siteName: 'Zitouni Pro Talent',
     title: 'Zitouni Pro Talent - وكالة اكتشاف المواهب الكروية في تونس',
     description: 'الوكالة الرائدة في تونس لاكتشاف وتطوير المواهب الكروية. فرص احترافية في تركيا، إسبانيا، الإمارات، ألبانيا وغيرها.',
@@ -213,10 +213,10 @@ const getJsonLdData = (lang: string) => {
         name: 'Zitouni Pro Talent',
         alternateName: 'وكالة زيتوني للمواهب المحترفة',
         description: 'وكالة رياضية متخصصة في اكتشاف وتطوير المواهب الكروية التونسية وتمثيلهم في البطولات الدولية',
-        url: 'https://zitouniprotalent.com',
-        logo: 'https://zitouniprotalent.com/logo.png',
+        url: 'https://zitouni-pro-talent.tn',
+        logo: 'https://zitouni-pro-talent.tn/logo.png',
         telephone: '+216-XX-XXX-XXX',
-        email: 'info@zitouniprotalent.com',
+        email: 'info@zitouni-pro-talent.tn',
         address: {
           '@type': 'PostalAddress',
           streetAddress: 'شارع الحبيب بورقيبة',
@@ -242,19 +242,19 @@ const getJsonLdData = (lang: string) => {
             '@type': 'ListItem',
             position: 1,
             name: 'الرئيسية',
-            item: 'https://zitouniprotalent.com'
+            item: 'https://zitouni-pro-talent.tn'
           },
           {
             '@type': 'ListItem',
             position: 2,
             name: 'المواهب',
-            item: 'https://zitouniprotalent.com/#portfolio'
+            item: 'https://zitouni-pro-talent.tn/#portfolio'
           },
           {
             '@type': 'ListItem',
             position: 3,
             name: 'الاتصال',
-            item: 'https://zitouniprotalent.com/#contact'
+            item: 'https://zitouni-pro-talent.tn/#contact'
           }
         ]
       },
@@ -263,7 +263,7 @@ const getJsonLdData = (lang: string) => {
         '@type': 'LocalBusiness',
         name: 'Zitouni Pro Talent',
         description: 'وكالة اكتشاف المواهب الكروية في سوسة، تونس',
-        url: 'https://zitouniprotalent.com',
+        url: 'https://zitouni-pro-talent.tn',
         telephone: '+216-XX-XXX-XXX',
         address: {
           '@type': 'PostalAddress',
@@ -285,10 +285,10 @@ const getJsonLdData = (lang: string) => {
         name: 'Zitouni Pro Talent',
         alternateName: 'Agence Zitouni pour les Talents Professionnels',
         description: 'Agence sportive spécialisée dans la découverte et le développement des talents footballistiques tunisiens et leur représentation dans les compétitions internationales',
-        url: 'https://zitouniprotalent.com',
-        logo: 'https://zitouniprotalent.com/logo.png',
+        url: 'https://zitouni-pro-talent.tn',
+        logo: 'https://zitouni-pro-talent.tn/logo.png',
         telephone: '+216-XX-XXX-XXX',
-        email: 'info@zitouniprotalent.com',
+        email: 'info@zitouni-pro-talent.tn',
         address: {
           '@type': 'PostalAddress',
           streetAddress: 'Avenue Habib Bourguiba',
@@ -314,19 +314,19 @@ const getJsonLdData = (lang: string) => {
             '@type': 'ListItem',
             position: 1,
             name: 'Accueil',
-            item: 'https://zitouniprotalent.com'
+            item: 'https://zitouni-pro-talent.tn'
           },
           {
             '@type': 'ListItem',
             position: 2,
             name: 'Talents',
-            item: 'https://zitouniprotalent.com/#portfolio'
+            item: 'https://zitouni-pro-talent.tn/#portfolio'
           },
           {
             '@type': 'ListItem',
             position: 3,
             name: 'Contact',
-            item: 'https://zitouniprotalent.com/#contact'
+            item: 'https://zitouni-pro-talent.tn/#contact'
           }
         ]
       },
@@ -335,7 +335,7 @@ const getJsonLdData = (lang: string) => {
         '@type': 'LocalBusiness',
         name: 'Zitouni Pro Talent',
         description: 'Agence de découverte de talents footballistiques à Sousse, Tunisie',
-        url: 'https://zitouniprotalent.com',
+        url: 'https://zitouni-pro-talent.tn',
         telephone: '+216-XX-XXX-XXX',
         address: {
           '@type': 'PostalAddress',
@@ -357,10 +357,10 @@ const getJsonLdData = (lang: string) => {
         name: 'Zitouni Pro Talent',
         alternateName: 'Zitouni Professional Talent Agency',
         description: 'Sports agency specialized in discovering and developing Tunisian football talents and representing them in international competitions',
-        url: 'https://zitouniprotalent.com',
-        logo: 'https://zitouniprotalent.com/logo.png',
+        url: 'https://zitouni-pro-talent.tn',
+        logo: 'https://zitouni-pro-talent.tn/logo.png',
         telephone: '+216-XX-XXX-XXX',
-        email: 'info@zitouniprotalent.com',
+        email: 'info@zitouni-pro-talent.tn',
         address: {
           '@type': 'PostalAddress',
           streetAddress: 'Habib Bourguiba Avenue',
@@ -386,19 +386,19 @@ const getJsonLdData = (lang: string) => {
             '@type': 'ListItem',
             position: 1,
             name: 'Home',
-            item: 'https://zitouniprotalent.com'
+            item: 'https://zitouni-pro-talent.tn'
           },
           {
             '@type': 'ListItem',
             position: 2,
             name: 'Talents',
-            item: 'https://zitouniprotalent.com/#portfolio'
+            item: 'https://zitouni-pro-talent.tn/#portfolio'
           },
           {
             '@type': 'ListItem',
             position: 3,
             name: 'Contact',
-            item: 'https://zitouniprotalent.com/#contact'
+            item: 'https://zitouni-pro-talent.tn/#contact'
           }
         ]
       },
@@ -407,7 +407,7 @@ const getJsonLdData = (lang: string) => {
         '@type': 'LocalBusiness',
         name: 'Zitouni Pro Talent',
         description: 'Football talent discovery agency in Sousse, Tunisia',
-        url: 'https://zitouniprotalent.com',
+        url: 'https://zitouni-pro-talent.tn',
         telephone: '+216-XX-XXX-XXX',
         address: {
           '@type': 'PostalAddress',
@@ -492,10 +492,10 @@ export default function RootLayout({ children, params }: RootLayoutProps) {
         <link rel="manifest" href="/site.webmanifest" />
         
         {/* Language Alternates */}
-        <link rel="alternate" href="https://zitouniprotalent.com/fr" hrefLang="fr" />
-        <link rel="alternate" href="https://zitouniprotalent.com/ar" hrefLang="ar" />
-        <link rel="alternate" href="https://zitouniprotalent.com/en" hrefLang="en" />
-        <link rel="alternate" href="https://zitouniprotalent.com/" hrefLang="x-default" />
+        <link rel="alternate" href="https://zitouni-pro-talent.tn/fr" hrefLang="fr" />
+        <link rel="alternate" href="https://zitouni-pro-talent.tn/ar" hrefLang="ar" />
+        <link rel="alternate" href="https://zitouni-pro-talent.tn/en" hrefLang="en" />
+        <link rel="alternate" href="https://zitouni-pro-talent.tn/" hrefLang="x-default" />
         
         {/* Additional SEO Meta Tags */}
         <meta name="abstract" content={
@@ -524,7 +524,7 @@ export default function RootLayout({ children, params }: RootLayoutProps) {
         {/* Additional Twitter Tags */}
         <meta name="twitter:site" content="@ZitouniProTalent" />
         <meta name="twitter:creator" content="@ZitouniProTalent" />
-        <meta name="twitter:domain" content="zitouniprotalent.com" />
+        <meta name="twitter:domain" content="zitouni-pro-talent.tn" />
         
         {/* Apple Meta Tags */}
         <meta name="apple-mobile-web-app-title" content="Zitouni Pro Talent" />
