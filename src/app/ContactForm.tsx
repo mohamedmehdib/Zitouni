@@ -14,6 +14,26 @@ interface Country {
   dial_code: string;
 }
 
+interface CountryApiResponse {
+  name: {
+    common: string;
+  };
+  cca2: string;
+  idd: {
+    root: string;
+    suffixes: string[];
+  };
+}
+
+interface OpenCaptchaResponse {
+  image: string;
+  token: string;
+}
+
+interface OpenCaptchaVerifyResponse {
+  success: boolean;
+}
+
 const ContactForm = () => {
   const [formData, setFormData] = useState({
     firstName: '',
@@ -51,10 +71,10 @@ const ContactForm = () => {
       try {
         setIsLoadingCountries(true);
         const response = await fetch('https://restcountries.com/v3.1/all?fields=name,cca2,idd');
-        const data = await response.json();
+        const data: CountryApiResponse[] = await response.json();
 
         const formattedCountries: Country[] = data
-          .map((country: any) => {
+          .map((country: CountryApiResponse) => {
             const idd = country.idd;
             if (!idd.root || !idd.suffixes) return null;
 
@@ -140,7 +160,7 @@ const ContactForm = () => {
       
       if (!res.ok) throw new Error(`HTTP error: ${res.status}`);
       
-      const data = await res.json();
+      const data: OpenCaptchaResponse = await res.json();
       
       if (!data.image || !data.token) {
         throw new Error('Incomplete captcha data from API');
@@ -199,7 +219,7 @@ const ContactForm = () => {
           })
         });
 
-        const result = await res.json();
+        const result: OpenCaptchaVerifyResponse = await res.json();
         captchaValid = result.success === true;
       } catch (err) {
         console.error('Captcha verification error:', err);
@@ -308,7 +328,7 @@ const ContactForm = () => {
       )}
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* الاسم الشخصي + اللقب */}
+        {/* الاسم الشخصي + اللقاب */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label
