@@ -8,6 +8,12 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl!, supabaseAnonKey!);
 
+interface Country {
+  code: string;
+  name: string;
+  dial_code: string;
+}
+
 const ContactForm = () => {
   const [formData, setFormData] = useState({
     firstName: '',
@@ -15,13 +21,17 @@ const ContactForm = () => {
     nationality: '',
     age: '',
     sex: '',
-    phone: '', // New phone field
+    phone: '',
+    countryCode: '+216', // Default to Tunisia
     previousClub: '',
     height: '',
     position: '',
     accommodation: '',
     message: ''
   });
+
+  const [countries, setCountries] = useState<Country[]>([]);
+  const [isLoadingCountries, setIsLoadingCountries] = useState(true);
 
   // Captcha states
   const [captchaImg, setCaptchaImg] = useState<string>('');
@@ -34,6 +44,67 @@ const ContactForm = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [captchaLoading, setCaptchaLoading] = useState(true);
+
+  // Fetch countries data
+  useEffect(() => {
+    const fetchCountries = async () => {
+      try {
+        setIsLoadingCountries(true);
+        const response = await fetch('https://restcountries.com/v3.1/all?fields=name,cca2,idd');
+        const data = await response.json();
+
+        const formattedCountries: Country[] = data
+          .map((country: any) => {
+            const idd = country.idd;
+            if (!idd.root || !idd.suffixes) return null;
+
+            // Get the first suffix or use root only
+            const dialCode = idd.root + (idd.suffixes[0] || '');
+            
+            return {
+              code: country.cca2,
+              name: country.name.common,
+              dial_code: dialCode
+            };
+          })
+          .filter((country: Country | null): country is Country => 
+            country !== null && country.dial_code.length > 0
+          )
+          .sort((a: Country, b: Country) => a.name.localeCompare(b.name));
+
+        setCountries(formattedCountries);
+      } catch (error) {
+        console.error('Error fetching countries:', error);
+        // Fallback to common countries if API fails
+        setCountries([
+          { code: 'TN', name: 'Tunisia', dial_code: '+216' },
+          { code: 'DZ', name: 'Algeria', dial_code: '+213' },
+          { code: 'MA', name: 'Morocco', dial_code: '+212' },
+          { code: 'EG', name: 'Egypt', dial_code: '+20' },
+          { code: 'SA', name: 'Saudi Arabia', dial_code: '+966' },
+          { code: 'AE', name: 'United Arab Emirates', dial_code: '+971' },
+          { code: 'QA', name: 'Qatar', dial_code: '+974' },
+          { code: 'KW', name: 'Kuwait', dial_code: '+965' },
+          { code: 'BH', name: 'Bahrain', dial_code: '+973' },
+          { code: 'OM', name: 'Oman', dial_code: '+968' },
+          { code: 'JO', name: 'Jordan', dial_code: '+962' },
+          { code: 'LB', name: 'Lebanon', dial_code: '+961' },
+          { code: 'FR', name: 'France', dial_code: '+33' },
+          { code: 'DE', name: 'Germany', dial_code: '+49' },
+          { code: 'IT', name: 'Italy', dial_code: '+39' },
+          { code: 'ES', name: 'Spain', dial_code: '+34' },
+          { code: 'GB', name: 'United Kingdom', dial_code: '+44' },
+          { code: 'US', name: 'United States', dial_code: '+1' },
+          { code: 'CA', name: 'Canada', dial_code: '+1' },
+          { code: 'BR', name: 'Brazil', dial_code: '+55' },
+        ]);
+      } finally {
+        setIsLoadingCountries(false);
+      }
+    };
+
+    fetchCountries();
+  }, []);
 
   // Simple fallback captcha generation
   const generateFallbackCaptcha = () => {
@@ -147,6 +218,9 @@ const ContactForm = () => {
     }
 
     try {
+      // Combine country code and phone number
+      const fullPhoneNumber = `${formData.countryCode}${formData.phone}`;
+
       // Insert data into Supabase
       const { error: supabaseError } = await supabase
         .from('player_registrations')
@@ -157,7 +231,7 @@ const ContactForm = () => {
             nationality: formData.nationality,
             age: parseInt(formData.age),
             sex: formData.sex,
-            phone: formData.phone, // New phone field
+            phone: fullPhoneNumber,
             previous_club: formData.previousClub,
             height: parseInt(formData.height),
             position: formData.position,
@@ -181,7 +255,8 @@ const ContactForm = () => {
         nationality: '',
         age: '',
         sex: '',
-        phone: '', // Reset phone field
+        phone: '',
+        countryCode: '+216',
         previousClub: '',
         height: '',
         position: '',
@@ -342,17 +417,39 @@ const ContactForm = () => {
             >
               رقم الهاتف *
             </label>
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-2 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="أدخل رقم هاتفك"
-              dir='rtl'
-            />
+            <div className="flex gap-2">
+              <select
+                name="countryCode"
+                value={formData.countryCode}
+                onChange={handleChange}
+                className="w-32 px-3 py-2 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                disabled={isLoadingCountries}
+              >
+                {isLoadingCountries ? (
+                  <option value="">جاري التحميل...</option>
+                ) : (
+                  countries.map((country) => (
+                    <option key={country.code} value={country.dial_code}>
+                      {country.dial_code} {country.code}
+                    </option>
+                  ))
+                )}
+              </select>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                required
+                className="flex-1 px-4 py-2 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="أدخل رقم هاتفك"
+                dir="ltr"
+              />
+            </div>
+            <p className="text-xs text-gray-500 mt-1">
+              الرقم الكامل: {formData.countryCode}{formData.phone}
+            </p>
           </div>
         </div>
 

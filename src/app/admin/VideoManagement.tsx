@@ -8,20 +8,12 @@ interface Video {
   id: string;
   title: string;
   video_id: string;
-  player_name: string;
-  position: string;
-  age: number;
-  club: string;
   created_at: string;
 }
 
 interface VideoFormData {
   title: string;
   video_id: string;
-  player_name: string;
-  position: string;
-  age: string;
-  club: string;
 }
 
 interface VideoManagementProps {
@@ -33,11 +25,7 @@ const VideoManagement = ({ showMessage }: VideoManagementProps) => {
   const [editingVideo, setEditingVideo] = useState<Video | null>(null);
   const [videoForm, setVideoForm] = useState<VideoFormData>({
     title: '',
-    video_id: '',
-    player_name: '',
-    position: '',
-    age: '',
-    club: ''
+    video_id: ''
   });
 
   // Use useCallback to memoize the function and prevent infinite re-renders
@@ -66,7 +54,7 @@ const VideoManagement = ({ showMessage }: VideoManagementProps) => {
       if (editingVideo) {
         const { error } = await supabase
           .from('videos')
-          .update({ ...videoForm, age: parseInt(videoForm.age) })
+          .update(videoForm)
           .eq('id', editingVideo.id);
         
         if (error) throw error;
@@ -75,7 +63,7 @@ const VideoManagement = ({ showMessage }: VideoManagementProps) => {
       } else {
         const { error } = await supabase
           .from('videos')
-          .insert([{ ...videoForm, age: parseInt(videoForm.age) }]);
+          .insert([videoForm]);
         
         if (error) throw error;
         
@@ -84,11 +72,7 @@ const VideoManagement = ({ showMessage }: VideoManagementProps) => {
       
       setVideoForm({
         title: '',
-        video_id: '',
-        player_name: '',
-        position: '',
-        age: '',
-        club: ''
+        video_id: ''
       });
       setEditingVideo(null);
       fetchVideos();
@@ -103,11 +87,7 @@ const VideoManagement = ({ showMessage }: VideoManagementProps) => {
     setEditingVideo(video);
     setVideoForm({
       title: video.title,
-      video_id: video.video_id,
-      player_name: video.player_name,
-      position: video.position,
-      age: video.age.toString(),
-      club: video.club
+      video_id: video.video_id
     });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -157,53 +137,6 @@ const VideoManagement = ({ showMessage }: VideoManagementProps) => {
                 required
               />
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">اسم اللاعب</label>
-              <input
-                type="text"
-                value={videoForm.player_name}
-                onChange={(e) => setVideoForm({ ...videoForm, player_name: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">المركز</label>
-              <select
-                value={videoForm.position}
-                onChange={(e) => setVideoForm({ ...videoForm, position: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                required
-              >
-                <option value="">اختر المركز</option>
-                <option value="حارس مرمى">حارس مرمى</option>
-                <option value="مدافع">مدافع</option>
-                <option value="وسط">وسط</option>
-                <option value="مهاجم">مهاجم</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">العمر</label>
-              <input
-                type="number"
-                min="1"
-                max="50"
-                value={videoForm.age}
-                onChange={(e) => setVideoForm({ ...videoForm, age: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">النادي</label>
-              <input
-                type="text"
-                value={videoForm.club}
-                onChange={(e) => setVideoForm({ ...videoForm, club: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                required
-              />
-            </div>
           </div>
           <div className="flex flex-col sm:flex-row gap-3">
             <button
@@ -219,11 +152,7 @@ const VideoManagement = ({ showMessage }: VideoManagementProps) => {
                   setEditingVideo(null);
                   setVideoForm({
                     title: '',
-                    video_id: '',
-                    player_name: '',
-                    position: '',
-                    age: '',
-                    club: ''
+                    video_id: ''
                   });
                 }}
                 className="flex-1 bg-gray-500 hover:bg-gray-400 text-white py-2 md:py-3 rounded-lg transition font-medium"
@@ -245,10 +174,6 @@ const VideoManagement = ({ showMessage }: VideoManagementProps) => {
               <thead className="bg-gray-50">
                 <tr>
                   <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">العنوان</th>
-                  <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">اللاعب</th>
-                  <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider hidden sm:table-cell">المركز</th>
-                  <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">العمر</th>
-                  <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell">النادي</th>
                   <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">الإجراءات</th>
                 </tr>
               </thead>
@@ -256,10 +181,6 @@ const VideoManagement = ({ showMessage }: VideoManagementProps) => {
                 {videos.map((video) => (
                   <tr key={video.id}>
                     <td className="px-4 py-4 whitespace-nowrap max-w-xs truncate">{video.title}</td>
-                    <td className="px-4 py-4 whitespace-nowrap">{video.player_name}</td>
-                    <td className="px-4 py-4 whitespace-nowrap hidden sm:table-cell">{video.position}</td>
-                    <td className="px-4 py-4 whitespace-nowrap hidden md:table-cell">{video.age}</td>
-                    <td className="px-4 py-4 whitespace-nowrap hidden lg:table-cell">{video.club}</td>
                     <td className="px-4 py-4 whitespace-nowrap text-sm font-medium">
                       <div className="flex flex-col sm:flex-row gap-2">
                         <button

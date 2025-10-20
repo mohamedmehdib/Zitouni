@@ -22,7 +22,6 @@ interface AgentFormData {
   location: string;
   image_url: string;
   specialties: string;
-  whatsapp_number: string; // Changed from players_placed to whatsapp_number
 }
 
 interface AgentManagementProps {
@@ -39,8 +38,7 @@ const AgentManagement = ({ showMessage }: AgentManagementProps) => {
     company: '',
     location: '',
     image_url: '',
-    specialties: '',
-    whatsapp_number: ''
+    specialties: ''
   });
 
   // Use useCallback to memoize the function and prevent infinite re-renders
@@ -111,24 +109,10 @@ const AgentManagement = ({ showMessage }: AgentManagementProps) => {
     }
   };
 
-  // Function to clean WhatsApp number (remove +, spaces, etc.)
-  const cleanWhatsAppNumber = (whatsappNumber: string): number => {
-    // Remove all non-digit characters except numbers
-    const cleaned = whatsappNumber.replace(/\D/g, '');
-    return parseInt(cleaned) || 0;
-  };
-
-  // Function to format WhatsApp number for display
-  const formatWhatsAppNumber = (whatsappNumber: number): string => {
-    if (!whatsappNumber) return '';
-    return `+${whatsappNumber}`;
-  };
-
   const handleAgentSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const specialtiesArray = agentForm.specialties.split(',').map(s => s.trim());
-      const whatsappNumber = cleanWhatsAppNumber(agentForm.whatsapp_number);
       
       if (editingAgent) {
         const { error } = await supabase
@@ -138,8 +122,7 @@ const AgentManagement = ({ showMessage }: AgentManagementProps) => {
             company: agentForm.company,
             location: agentForm.location,
             image_url: agentForm.image_url,
-            specialties: specialtiesArray,
-            players_placed: whatsappNumber // Using players_placed field for WhatsApp number
+            specialties: specialtiesArray
           })
           .eq('id', editingAgent.id);
         
@@ -155,7 +138,7 @@ const AgentManagement = ({ showMessage }: AgentManagementProps) => {
             location: agentForm.location,
             image_url: agentForm.image_url,
             specialties: specialtiesArray,
-            players_placed: whatsappNumber // Using players_placed field for WhatsApp number
+            players_placed: 0 // Default value
           }]);
         
         if (error) throw error;
@@ -168,8 +151,7 @@ const AgentManagement = ({ showMessage }: AgentManagementProps) => {
         company: '',
         location: '',
         image_url: '',
-        specialties: '',
-        whatsapp_number: ''
+        specialties: ''
       });
       setEditingAgent(null);
       fetchAgents();
@@ -187,8 +169,7 @@ const AgentManagement = ({ showMessage }: AgentManagementProps) => {
       company: agent.company,
       location: agent.location,
       image_url: agent.image_url,
-      specialties: Array.isArray(agent.specialties) ? agent.specialties.join(', ') : agent.specialties || '',
-      whatsapp_number: formatWhatsAppNumber(agent.players_placed) // Convert stored number to formatted string
+      specialties: Array.isArray(agent.specialties) ? agent.specialties.join(', ') : agent.specialties || ''
     });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -245,17 +226,6 @@ const AgentManagement = ({ showMessage }: AgentManagementProps) => {
                 value={agentForm.location}
                 onChange={(e) => setAgentForm({ ...agentForm, location: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">رقم الواتساب</label>
-              <input
-                type="text"
-                value={agentForm.whatsapp_number}
-                onChange={(e) => setAgentForm({ ...agentForm, whatsapp_number: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                placeholder="مثال: +21652666777"
                 required
               />
             </div>
@@ -322,8 +292,7 @@ const AgentManagement = ({ showMessage }: AgentManagementProps) => {
                     company: '',
                     location: '',
                     image_url: '',
-                    specialties: '',
-                    whatsapp_number: ''
+                    specialties: ''
                   });
                 }}
                 className="flex-1 bg-gray-500 hover:bg-gray-400 text-white py-2 md:py-3 rounded-lg transition font-medium"
@@ -348,7 +317,6 @@ const AgentManagement = ({ showMessage }: AgentManagementProps) => {
                   <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">الاسم</th>
                   <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider hidden sm:table-cell">الشركة</th>
                   <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">الموقع</th>
-                  <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell">رقم الواتساب</th>
                   <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">الإجراءات</th>
                 </tr>
               </thead>
@@ -369,9 +337,6 @@ const AgentManagement = ({ showMessage }: AgentManagementProps) => {
                     <td className="px-4 py-4 whitespace-nowrap max-w-xs truncate">{agent.name}</td>
                     <td className="px-4 py-4 whitespace-nowrap hidden sm:table-cell">{agent.company}</td>
                     <td className="px-4 py-4 whitespace-nowrap hidden md:table-cell">{agent.location}</td>
-                    <td className="px-4 py-4 whitespace-nowrap hidden lg:table-cell">
-                      {formatWhatsAppNumber(agent.players_placed)}
-                    </td>
                     <td className="px-4 py-4 whitespace-nowrap text-sm font-medium">
                       <div className="flex flex-col sm:flex-row gap-2">
                         <button
