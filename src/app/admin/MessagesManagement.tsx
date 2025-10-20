@@ -96,7 +96,6 @@ const MessagesManagement = ({ showMessage }: MessagesManagementProps) => {
         );
       }
 
-      const statusText = newStatus ? 'نشط' : 'غير نشط';
       showMessage('success', `تم ${newStatus ? 'تفعيل' : 'تعطيل'} الرسالة بنجاح`);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'حدث خطأ في تغيير حالة الرسالة';

@@ -76,26 +76,6 @@ const BodyContentArabic = () => {
   const [selectedCompetition, setSelectedCompetition] = useState<Competition | null>(null);
   const [showMessageModal, setShowMessageModal] = useState(false);
 
-  // Function to handle WhatsApp redirection
-  const handleWhatsAppRedirect = (phoneNumber: string) => {
-    // Ensure the phone number has the correct format
-    let formattedNumber = phoneNumber.trim();
-    
-    // Remove any existing + sign
-    if (formattedNumber.startsWith('+')) {
-      formattedNumber = formattedNumber.substring(1);
-    }
-    
-    // Add the + sign for WhatsApp
-    const whatsappNumber = `+${formattedNumber}`;
-    
-    // Create WhatsApp URL
-    const whatsappUrl = `https://wa.me/${whatsappNumber}`;
-    
-    // Open in new tab
-    window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
-  };
-
   // Fetch players data
   useEffect(() => {
     const fetchPlayers = async () => {
