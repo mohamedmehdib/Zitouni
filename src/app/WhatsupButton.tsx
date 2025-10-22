@@ -7,9 +7,8 @@ import dynamic from 'next/dynamic';
 // Use dynamic import with no SSR to completely avoid hydration issues
 const WhatsappButton = dynamic(() => Promise.resolve(() => {
   const handleClick = () => {
-    const phoneNumber = "1234567890";
-    const message = "Hello! I'm interested in your services.";
-    window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
+    const phoneNumber = "+21624262849";
+    window.open(`https://wa.me/${phoneNumber}`, '_blank');
   };
 
   return (

@@ -144,10 +144,10 @@ const ArabicHeroSection = () => {
               </div>
               
               <Image
-                src="/alemdar.jpg"
+                src="/haitham.jpg"
                 alt="صورة توضيحية للتحول الرقمي"
-                width={600}
-                height={400}
+                width={10000}
+                height={10000}
                 className={`rounded-2xl w-full h-auto transition-opacity duration-500 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
                 onLoad={() => setImageLoaded(true)}
                 priority
