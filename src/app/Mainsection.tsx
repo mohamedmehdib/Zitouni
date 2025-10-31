@@ -672,3 +672,4 @@ const BodyContentArabic = () => {
 
 
 export default BodyContentArabic;
+
