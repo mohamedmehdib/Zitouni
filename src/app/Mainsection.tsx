@@ -511,15 +511,7 @@ const BodyContentArabic = () => {
                           allowFullScreen
                         />
                       </div>
-                      <div className="p-4">
-                        <h3 className="font-bold text-lg text-blue-900 mb-1">{video.player_name}</h3>
-                        <div className="flex justify-between text-sm text-gray-600 mt-1">
-                          <span>{video.position}</span>
-                          <span>العمر: {video.age}</span>
-                        </div>
-                        <p className="text-gray-700 text-sm mt-2">{video.club}</p>
-             
-                      </div>
+
                     </div>
                   );
                 })}
@@ -666,5 +658,6 @@ const BodyContentArabic = () => {
 
 
 export default BodyContentArabic;
+
 
 
