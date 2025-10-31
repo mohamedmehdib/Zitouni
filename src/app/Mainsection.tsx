@@ -518,13 +518,7 @@ const BodyContentArabic = () => {
                           <span>العمر: {video.age}</span>
                         </div>
                         <p className="text-gray-700 text-sm mt-2">{video.club}</p>
-                        {isShort && (
-                          <div className="mt-2">
-                            <span className="bg-purple-100 text-purple-800 text-xs font-medium px-2 py-1 rounded">
-                              YouTube Short
-                            </span>
-                          </div>
-                        )}
+             
                       </div>
                     </div>
                   );
@@ -672,4 +666,5 @@ const BodyContentArabic = () => {
 
 
 export default BodyContentArabic;
+
 
