@@ -14,16 +14,32 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
+interface MessageState {
+  type: string;
+  content: string;
+}
+
+interface LoginForm {
+  email: string;
+  password: string;
+}
+
+interface LoginErrors {
+  email: string;
+  password: string;
+  general: string;
+}
+
 const AdminDashboard = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('players');
-  const [message, setMessage] = useState({ type: '', content: '' });
-  const [loginForm, setLoginForm] = useState({
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [activeTab, setActiveTab] = useState<string>('players');
+  const [message, setMessage] = useState<MessageState>({ type: '', content: '' });
+  const [loginForm, setLoginForm] = useState<LoginForm>({
     email: '',
     password: ''
   });
-  const [loginErrors, setLoginErrors] = useState({
+  const [loginErrors, setLoginErrors] = useState<LoginErrors>({
     email: '',
     password: '',
     general: ''
@@ -34,7 +50,7 @@ const AdminDashboard = () => {
     checkAuth();
   }, []);
 
-  const checkAuth = async () => {
+  const checkAuth = async (): Promise<void> => {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (session) {
@@ -47,7 +63,7 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleLoginChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
     setLoginForm(prev => ({
       ...prev,
@@ -55,7 +71,7 @@ const AdminDashboard = () => {
     }));
 
     // Clear errors when user types
-    if (loginErrors[name as keyof typeof loginErrors]) {
+    if (loginErrors[name as keyof LoginErrors]) {
       setLoginErrors(prev => ({
         ...prev,
         [name]: ''
@@ -63,8 +79,8 @@ const AdminDashboard = () => {
     }
   };
 
-  const validateLoginForm = () => {
-    const errors = {
+  const validateLoginForm = (): boolean => {
+    const errors: LoginErrors = {
       email: '',
       password: '',
       general: ''
@@ -84,7 +100,7 @@ const AdminDashboard = () => {
     return !errors.email && !errors.password;
   };
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
     setLoginErrors({ email: '', password: '', general: '' });
 
@@ -113,7 +129,7 @@ const AdminDashboard = () => {
         showMessage('success', 'تم تسجيل الدخول بنجاح!');
         setLoginForm({ email: '', password: '' });
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error('Login error:', error);
       setLoginErrors(prev => ({
         ...prev,
@@ -124,7 +140,7 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleLogout = async () => {
+  const handleLogout = async (): Promise<void> => {
     try {
       await supabase.auth.signOut();
       setIsLoggedIn(false);
@@ -135,7 +151,7 @@ const AdminDashboard = () => {
     }
   };
 
-  const showMessage = (type: string, content: string) => {
+  const showMessage = (type: string, content: string): void => {
     setMessage({ type, content });
     setTimeout(() => setMessage({ type: '', content: '' }), 5000);
   };
